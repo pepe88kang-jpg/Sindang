@@ -1,0 +1,15 @@
+export const SCHOOLS = [
+  "SDN Dermayu",
+  "TK Gandasari",
+  "Al Maadi",
+  "Al Wasliyah",
+  "MTS Al-Wasliyah",
+  "SMP Al-Irsyad",
+  "KB Ushafa",
+  "TK Ushafa",
+  "SD Al-Khoir",
+  "SDN 1 Sindang",
+  "SDN 2 Sindang",
+  "SD Al-Irsyad",
+  "SMA PGRI 2 Sindang",
+];
