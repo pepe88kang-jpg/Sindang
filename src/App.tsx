@@ -44,6 +44,7 @@ function BottomNav() {
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+  console.log("[v0] Layout rendered - loading:", loading, "user:", user?.email);
 
   const [loginError, setLoginError] = useState<string | null>(null);
 
