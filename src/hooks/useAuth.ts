@@ -8,13 +8,13 @@ export function useAuth() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+    
     // Timeout to prevent infinite loading
     const timeout = setTimeout(() => {
-      if (loading) {
-        console.log("[v0] Auth timeout - forcing loading false");
-        setLoading(false);
-      }
-    }, 5000);
+      console.log("[v0] Auth timeout - forcing loading false");
+      if (isMounted) setLoading(false);
+    }, 3000);
 
     const unsubscribe = onAuthStateChanged(
       auth,
@@ -32,6 +32,7 @@ export function useAuth() {
     );
 
     return () => {
+      isMounted = false;
       clearTimeout(timeout);
       unsubscribe();
     };
