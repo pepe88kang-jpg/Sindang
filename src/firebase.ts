@@ -3,7 +3,7 @@ import { getDatabase } from "firebase/database";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAdIYf8EeeW6ZqHd5pOt6cVXNeQrTrWuWA",
+  apiKey: "AIzaSyAoqmEZg--4Xv5avc1ODSMQBDMlSw0T1PI",
   authDomain: "monitoring-gizi-sppg.firebaseapp.com",
   databaseURL: "https://monitoring-gizi-sppg-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "monitoring-gizi-sppg",
@@ -17,3 +17,5 @@ const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('email');
+googleProvider.addScope('profile');

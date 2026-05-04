@@ -17,19 +17,27 @@ interface DistribusiData {
 }
 
 export default function Dashboard() {
+  console.log("[v0] Dashboard component mounting");
   const [totalPorsi, setTotalPorsi] = useState(0);
   const [totalSekolah, setTotalSekolah] = useState(0);
   const [avgRating, setAvgRating] = useState({ rasa: 0, tekstur: 0, penampilan: 0, total: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("[v0] Dashboard useEffect - connecting to Firebase");
     const distribusiRef = ref(db, "distribusi");
     const penilaianRef = ref(db, "penilaian");
 
-    let porsiCount = 0;
-    const sekolahSet = new Set<string>();
+    // Timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      console.log("[v0] Dashboard timeout - forcing loading false");
+      setLoading(false);
+    }, 5000);
 
     const unsubDist = onValue(distribusiRef, (snapshot) => {
+      console.log("[v0] Distribusi data received");
+      let porsiCount = 0;
+      const sekolahSet = new Set<string>();
       const val = snapshot.val();
       if (val) {
         Object.keys(val).forEach((key) => {
@@ -40,12 +48,14 @@ export default function Dashboard() {
       }
       setTotalPorsi(porsiCount);
       setTotalSekolah(sekolahSet.size);
-      
-      // Stop loading if both are checked, simple handling
-      setTimeout(() => setLoading(false), 500);
+      setLoading(false);
+    }, (error) => {
+      console.error("[v0] Distribusi error:", error);
+      setLoading(false);
     });
 
     const unsubPenil = onValue(penilaianRef, (snapshot) => {
+      console.log("[v0] Penilaian data received");
       const val = snapshot.val();
       if (val) {
         let r = 0, t = 0, p = 0;
@@ -64,9 +74,12 @@ export default function Dashboard() {
           total: (r + t + p) / (3 * c)
         });
       }
+    }, (error) => {
+      console.error("[v0] Penilaian error:", error);
     });
 
     return () => {
+      clearTimeout(timeout);
       unsubDist();
       unsubPenil();
     };
